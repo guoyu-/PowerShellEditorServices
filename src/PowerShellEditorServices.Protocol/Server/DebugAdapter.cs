@@ -113,7 +113,12 @@ namespace Microsoft.PowerShell.EditorServices.Protocol.Server
             // launch request.
             if (this.isLaunchRequestComplete)
             {
-                this.LaunchScript(requestContext);
+                // The script needs to be launched asynchronously but we
+                // don't need to wait for it to complete.  Store the task
+                // in a variable to avoid the compiler warning.
+                var unusedTask =
+                    this.LaunchScript(requestContext)
+                        .ConfigureAwait(false);
             }
 
             this.isConfigurationDoneRequestComplete = true;
@@ -173,7 +178,12 @@ namespace Microsoft.PowerShell.EditorServices.Protocol.Server
             // configurationDone request.
             if (this.isConfigurationDoneRequestComplete)
             {
-                this.LaunchScript(requestContext);
+                // The script needs to be launched asynchronously but we
+                // don't need to wait for it to complete.  Store the task
+                // in a variable to avoid the compiler warning.
+                var unusedTask =                
+                    this.LaunchScript(requestContext)
+                        .ConfigureAwait(false);
             }
 
             this.isLaunchRequestComplete = true;
